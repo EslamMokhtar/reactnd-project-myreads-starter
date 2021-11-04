@@ -1,6 +1,16 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { getAll } from "../BooksAPI";
 const Search = () => {
+  const [books, setBooks] = useState([]);
+  const getBooks = async () => {
+    const books = await getAll();
+    setBooks(books);
+  };
+  useEffect(() => {
+    getBooks();
+  }, []);
+  console.log(books)
   return (
     <div className="search-books">
       <div className="search-books-bar">
