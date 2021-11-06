@@ -1,19 +1,10 @@
-import React, { useEffect, useState } from "react";
-import { getAll } from "../BooksAPI";
+import React from "react";
 
-const Read = () => {
-  const [books, setBooks] = useState([]);
-  const getBooks = async () => {
-    const books = await getAll();
-    setBooks(books.filter((book) => book.shelf === "read"));
-  };
-  useEffect(() => {
-    getBooks();
-  }, []);
-  console.log(books);
+const Read = (props) => {
+  const books = props.books.filter((book) => book.shelf === "read");
 
-  const clickHandler = (id, e) => {
-    console.log(e.target.value, id);
+  const changeHandler = (id, e) => {
+    props.onChange(id, e.target.value);
   };
   return (
     <div className="bookshelf">
@@ -30,14 +21,12 @@ const Read = () => {
                       style={{
                         width: 128,
                         height: 193,
-                        backgroundImage: `url(${
-                          book.imageLinks.smallThumbnail
-                        })`,
+                        backgroundImage: `url(${book.imageLinks.smallThumbnail})`,
                       }}
                     />
                     <div className="book-shelf-changer">
-                      <form onChange={clickHandler.bind(null, book.id)}>
-                        <select>
+                      <form onChange={changeHandler.bind(null, book.id)}>
+                        <select defaultValue='read'>
                           <option value="move" disabled>
                             Move to...
                           </option>

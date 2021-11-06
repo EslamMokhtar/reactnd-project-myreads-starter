@@ -1,38 +1,59 @@
-import React from "react";
-import { Link, Route, Routes } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { Route, Routes, useNavigate } from "react-router-dom";
 import Search from "./components/Search";
-// import * as BooksAPI from './BooksAPI'
+import { getAll, update, search } from "./BooksAPI";
 import "./App.css";
-import CurrentlyReading from "./components/CurrentlyReading";
-import WantToRead from "./components/WantToRead";
-import Read from "./components/Read";
+import Shelfs from "./components/Shelfs";
 
 const App = () => {
+  const navigate = useNavigate();
+  const [books, setBooks] = useState([]);
+  const [searchResult, setSearchResult] = useState([]);
+
+  const getBooks = async () => {
+    const books = await getAll();
+    setBooks(books);
+  };
+  useEffect(() => {
+    getBooks();
+  }, []);
+
+  const onChange = (id, shelf) => {
+    const book = books.find((book) => book.id === id);
+    if (book) {
+      book.shelf = shelf;
+      setBooks([...books]);
+      return update(book, shelf);
+    }
+    const bookFromSearch = searchResult.find((book) => book.id === id);
+    bookFromSearch.shelf = shelf;
+    setBooks([...books, bookFromSearch]);
+    setSearchResult([]);
+    update(bookFromSearch, shelf);
+    navigate("/");
+  };
+
+  const onSubmit = async (bookName) => {
+    const books = await search(bookName);
+    setSearchResult(books);
+  };
   return (
     <div className="app">
       <Routes>
-        <Route path="/search" element={<Search />} />
+        <Route
+          path="/search"
+          element={
+            <Search
+              clearSearch={() => setSearchResult([])}
+              onChange={onChange}
+              onSubmit={onSubmit}
+              searchResult={searchResult}
+            />
+          }
+        />
         <Route
           path="/"
-          element={
-            <div className="list-books">
-              <div className="list-books-title">
-                <h1>MyReads</h1>
-              </div>
-              <div className="list-books-content">
-                <div>
-                  <CurrentlyReading />
-                  <WantToRead />
-                  <Read />
-                </div>
-              </div>
-              <div className="open-search">
-                <Link to="/search">
-                  <button>Add a book</button>
-                </Link>
-              </div>
-            </div>
-          }
+          element={<Shelfs onChange={onChange} books={books} />}
         />
       </Routes>
     </div>
