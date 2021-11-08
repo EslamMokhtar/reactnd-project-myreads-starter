@@ -3,9 +3,9 @@ import { Link } from "react-router-dom";
 import WantToRead from "./WantToRead";
 import Read from "./Read";
 import CurrentlyReading from "./CurrentlyReading";
+import PropTypes from "prop-types";
 
 const Shelfs = (props) => {
-
   return (
     <div className="list-books">
       <div className="list-books-title">
@@ -26,5 +26,8 @@ const Shelfs = (props) => {
     </div>
   );
 };
-
+Shelfs.propTypes = {
+  books: PropTypes.array.isRequired,
+  onChange: PropTypes.func.isRequired,
+};
 export default Shelfs;

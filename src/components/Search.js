@@ -88,7 +88,7 @@ const Search = (props) => {
   );
 };
 Search.propTypes = {
-  books: PropTypes.array.isRequired,
+  searchResult: PropTypes.array.isRequired,
   onChange: PropTypes.func.isRequired,
   onSubmit: PropTypes.func.isRequired,
   clearSearch: PropTypes.func.isRequired,
