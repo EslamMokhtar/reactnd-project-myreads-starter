@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import PropTypes from "prop-types";
 
 const Search = (props) => {
   const books = props.searchResult;
@@ -10,20 +11,24 @@ const Search = (props) => {
   const submitHandler = (e) => {
     e.preventDefault();
     props.onSubmit(query.search);
-   
   };
 
   const onChangeHandler = (e) => {
     const name = e.target.name;
     const value = e.target.value;
-    setQuery({ search: "" });
+
     setQuery((pre) => ({ ...pre, [name]: value }));
-  
   };
+
+  const backToHomeHandler = () => {
+    setQuery({ search: "" });
+    props.clearSearch();
+  };
+
   return (
     <div className="search-books">
       <div className="search-books-bar">
-        <Link className="close-search" to="/" onClick={props.clearSearch}>
+        <Link className="close-search" to="/" onClick={backToHomeHandler}>
           Close
         </Link>
         <div className="search-books-input-wrapper">
@@ -77,10 +82,15 @@ const Search = (props) => {
               );
             })}
         </ol>
-        {books.error && <h3 style={{textAlign:'center'}}>No Result.</h3>}
+        {books.error && <h3 style={{ textAlign: "center" }}>No Result.</h3>}
       </div>
     </div>
   );
 };
-
+Search.propTypes = {
+  books: PropTypes.array.isRequired,
+  onChange: PropTypes.func.isRequired,
+  onSubmit: PropTypes.func.isRequired,
+  clearSearch: PropTypes.func.isRequired,
+};
 export default Search;

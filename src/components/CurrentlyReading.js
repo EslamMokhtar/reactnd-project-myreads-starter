@@ -1,14 +1,15 @@
 import React from "react";
+import PropTypes from "prop-types";
 
 const CurrentlyReading = (props) => {
   const books = props.books.filter((book) => book.shelf === "currentlyReading");
 
   const changeHandler = (id, e) => {
-    console.log("hi");
     props.onChange(id, e.target.value);
   };
+
   return (
-    <div className="bookshelf">
+    <div className="bookshelf" id="currentlyReading">
       <h2 className="bookshelf-title">Currently Reading</h2>
       <div className="bookshelf-books">
         <ol className="books-grid">
@@ -52,5 +53,8 @@ const CurrentlyReading = (props) => {
     </div>
   );
 };
-
+CurrentlyReading.propTypes = {
+  books: PropTypes.array.isRequired,
+  onChange: PropTypes.func.isRequired,
+};
 export default CurrentlyReading;

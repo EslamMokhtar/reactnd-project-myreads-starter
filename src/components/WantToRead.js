@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 
 const WantToRead = (props) => {
   const books = props.books.filter((book) => book.shelf === "wantToRead");
@@ -6,8 +7,9 @@ const WantToRead = (props) => {
   const changeHandler = (id, e) => {
     props.onChange(id, e.target.value);
   };
+
   return (
-    <div className="bookshelf">
+    <div className="bookshelf" id="wantToRead">
       <h2 className="bookshelf-title">Want to Read</h2>
       <div className="bookshelf-books">
         <ol className="books-grid">
@@ -26,7 +28,7 @@ const WantToRead = (props) => {
                     />
                     <div className="book-shelf-changer">
                       <form onChange={changeHandler.bind(null, book.id)}>
-                        <select defaultValue='wantToRead'>
+                        <select defaultValue="wantToRead">
                           <option value="move" disabled>
                             Move to...
                           </option>
@@ -51,5 +53,8 @@ const WantToRead = (props) => {
     </div>
   );
 };
-
+WantToRead.propTypes = {
+  books: PropTypes.array.isRequired,
+  onChange: PropTypes.func.isRequired,
+};
 export default WantToRead;

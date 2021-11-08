@@ -27,16 +27,16 @@ const App = () => {
     }
     const bookFromSearch = searchResult.find((book) => book.id === id);
     bookFromSearch.shelf = shelf;
+    //setSearchResult(searchResult.filter((book) => book.id !== id));
     setBooks([...books, bookFromSearch]);
-    setSearchResult([]);
     update(bookFromSearch, shelf);
-    navigate("/");
   };
 
   const onSubmit = async (bookName) => {
-    const books = await search(bookName);
-    setSearchResult(books);
+    const booksFromSearch = await search(bookName);
+    setSearchResult(booksFromSearch);
   };
+  
   return (
     <div className="app">
       <Routes>
