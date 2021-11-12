@@ -1,9 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import WantToRead from "./WantToRead";
-import Read from "./Read";
-import CurrentlyReading from "./CurrentlyReading";
 import PropTypes from "prop-types";
+import Shelf from "./Shelf";
 
 const Shelfs = (props) => {
   return (
@@ -13,9 +11,19 @@ const Shelfs = (props) => {
       </div>
       <div className="list-books-content">
         <div>
-          <CurrentlyReading books={props.books} onChange={props.onChange} />
-          <WantToRead books={props.books} onChange={props.onChange} />
-          <Read books={props.books} onChange={props.onChange} />
+          {[
+            { name: "currentlyReading", title: "Currently Reading" },
+            { name: "wantToRead", title: "Want To Read" },
+            { name: "read", title: "Read" },
+          ].map((shelf, index) => (
+            <Shelf
+              key={index}
+              shelfTitle={shelf.title}
+              shelfName={shelf.name}
+              books={props.books}
+              onChange={props.onChange}
+            />
+          ))}
         </div>
       </div>
       <div className="open-search">

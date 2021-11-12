@@ -11,12 +11,12 @@ const Book = (props) => {
             style={{
               width: 128,
               height: 193,
-              backgroundImage: `url(${props.imageLink})`,
+              backgroundImage: props.imageLink && `url(${props.imageLink})`,
             }}
           />
           <div className="book-shelf-changer">
             <form onChange={props.changeHandler}>
-              <select defaultValue="read">
+              <select defaultValue={props.shelf}>
                 <option value="move" disabled>
                   Move to...
                 </option>
@@ -29,13 +29,13 @@ const Book = (props) => {
           </div>
         </div>
         <div className="book-title">{props.title}</div>
-        <div className="book-authors">{props.authors}</div>
+        <div className="book-authors">{props.authors.join(", ")}</div>
       </div>
     </li>
   );
 };
 Book.propTypes = {
-  imageLink: PropTypes.string.isRequired,
+  imageLink: PropTypes.string,
   changeHandler: PropTypes.func.isRequired,
   title: PropTypes.string.isRequired,
   authors: PropTypes.array.isRequired,

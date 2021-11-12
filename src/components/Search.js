@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
+import Book from "./Book";
 
 const Search = (props) => {
   const books = props.searchResult;
@@ -16,7 +17,7 @@ const Search = (props) => {
   const onChangeHandler = (e) => {
     const name = e.target.name;
     const value = e.target.value;
-
+    props.onChangeHandler(query.search);
     setQuery((pre) => ({ ...pre, [name]: value }));
   };
 
@@ -48,41 +49,18 @@ const Search = (props) => {
           {books.length > 0 &&
             books.map((book) => {
               return (
-                <li key={book.id}>
-                  <div className="book">
-                    <div className="book-top">
-                      <div
-                        className="book-cover"
-                        style={{
-                          width: 128,
-                          height: 193,
-                          backgroundImage: `url(${book.imageLinks.smallThumbnail})`,
-                        }}
-                      />
-                      <div className="book-shelf-changer">
-                        <form onChange={changeHandler.bind(null, book.id)}>
-                          <select defaultValue="none">
-                            <option value="move" disabled>
-                              Move to...
-                            </option>
-                            <option value="currentlyReading">
-                              Currently Reading
-                            </option>
-                            <option value="wantToRead">Want to Read</option>
-                            <option value="read">Read</option>
-                            <option value="none">None</option>
-                          </select>
-                        </form>
-                      </div>
-                    </div>
-                    <div className="book-title">{book.title}</div>
-                    <div className="book-authors">{book.authors}</div>
-                  </div>
-                </li>
+                <Book
+                  key={book.id}
+                  shelf="none"
+                  imageLink={book.imageLinks && book.imageLinks.smallThumbnail}
+                  changeHandler={changeHandler.bind(null, book.id)}
+                  title={book.title}
+                  authors={book.authors}
+                />
               );
             })}
         </ol>
-        {books.error && <h3 style={{ textAlign: "center" }}>No Result.</h3>}
+        {books.error && <h2 style={{ textAlign: "center" }}>No results for "{query.search}"</h2>}
       </div>
     </div>
   );
