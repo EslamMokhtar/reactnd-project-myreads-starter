@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, useNavigate } from "react-router-dom";
 import Search from "./components/Search";
 import { getAll, update, search } from "./BooksAPI";
 import "./App.css";
 import Shelfs from "./components/Shelfs";
 
 const App = () => {
+  const navigate = useNavigate();
   const [books, setBooks] = useState([]);
   const [searchResult, setSearchResult] = useState([]);
 
@@ -21,26 +22,21 @@ const App = () => {
     const book = books.find((book) => book.id === id);
     if (book) {
       book.shelf = shelf;
-      setBooks(books.filter((book) => book.id !== id));
-      console.log(books);
+      setBooks([...books]);
       return update(book, shelf);
     }
     const bookFromSearch = searchResult.find((book) => book.id === id);
     bookFromSearch.shelf = shelf;
-    setSearchResult(searchResult.filter((book) => book.id !== id));
+    //setSearchResult(searchResult.filter((book) => book.id !== id));
     setBooks([...books, bookFromSearch]);
     update(bookFromSearch, shelf);
-    console.log(books);
   };
 
   const onSubmit = async (bookName) => {
     const booksFromSearch = await search(bookName);
-    const filtered = booksFromSearch.filter((book) => {
-      return books.findIndex((y) => y.id === book.id) < 0;
-    });
-    setSearchResult(filtered);
+    setSearchResult(booksFromSearch);
   };
-
+  
   return (
     <div className="app">
       <Routes>
