@@ -70,7 +70,7 @@ const Search = (props) => {
   );
 };
 Search.propTypes = {
-  searchResult: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
+  searchResult: PropTypes.oneOfType([PropTypes.array, PropTypes.object]).isRequired,
   onChange: PropTypes.func.isRequired,
   onSubmit: PropTypes.func.isRequired,
   clearSearch: PropTypes.func.isRequired,
