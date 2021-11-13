@@ -17,8 +17,8 @@ const Search = (props) => {
   const onChangeHandler = (e) => {
     const name = e.target.name;
     const value = e.target.value;
-    props.onChangeHandler(query.search);
     setQuery((pre) => ({ ...pre, [name]: value }));
+    props.onChangeHandler(value);
   };
 
   const backToHomeHandler = () => {
@@ -60,13 +60,17 @@ const Search = (props) => {
               );
             })}
         </ol>
-        {books.error && <h2 style={{ textAlign: "center" }}>No results for "{query.search}"</h2>}
+        {books.error && (
+          <h2 style={{ textAlign: "center" }}>
+            No results for "{query.search}"
+          </h2>
+        )}
       </div>
     </div>
   );
 };
 Search.propTypes = {
-  searchResult: PropTypes.array.isRequired,
+  searchResult: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
   onChange: PropTypes.func.isRequired,
   onSubmit: PropTypes.func.isRequired,
   clearSearch: PropTypes.func.isRequired,
